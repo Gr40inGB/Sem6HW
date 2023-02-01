@@ -14,6 +14,8 @@ void Root()
     // }
 }
 
+
+
 int CountNumbersInStr(string inString)
 {
     int countPlusNumber = 0; // будет считать положительные числа
@@ -23,51 +25,78 @@ int CountNumbersInStr(string inString)
 
     for (int i = 0; i < inString.Length; i++)
     {
-        if (i == inString.Length - 1) // если строка закончилась - обработаем вручную
+        if (inString[i] == '-') // если встречаем минус 
         {
-            if (Char.IsNumber(inString[i]))  // если последний элемент число -
+            if (maybeInt != null && maybeInt != "-")       // если до этого maybeInt что-то содержало - то там явно было число и его можно выводить
             {
-                if (maybeInt != null)  /// если до этого не было ничего похожего на число или -/+
-                {
-                    maybeInt += inString[i];
-                    System.Console.WriteLine(maybeInt);
-                }
-                else                    // если что-то было - то добавляем наш последний символ
-                {
-                    maybeInt += inString[i];
-                    System.Console.WriteLine(maybeInt);
-                    maybeInt = null;
-
-                }
-            }
-            else
-            {
-                maybeInt += inString[i];
                 System.Console.WriteLine(maybeInt);
-                maybeInt = null;
-
+                maybeInt = "-";        // зануляем для поиска дальше
             }
+            else maybeInt = "-";                 // если в maybeInt не было ничего добавляем минус
+
         }
-        else if (Char.IsNumber(inString[i]))
+        else if (int.TryParse(maybeInt + inString[i], out int outNumber))
         {
             maybeInt += inString[i];
         }
-        else if (inString[i] == '-')     // если встречаем минус -  
-        {
-            if (maybeInt != null) System.Console.WriteLine(maybeInt);    // проверяем было ли число до этого - если да - то выводим его 
-            {
-                if (Char.IsNumber(inString[i + 1])) maybeInt += inString[i]; //то проверяем если ли после него цифра - ели да
-            }
-        }
         else
         {
-            if (maybeInt != null)
+            if (maybeInt != null || maybeInt != "-")       // если до этого maybeInt что-то содержало - то там явно было число и его можно выводить
             {
                 System.Console.WriteLine(maybeInt);
-                maybeInt = null;
+                maybeInt = null;        // зануляем для поиска дальше
             }
         }
     }
+
+
+    // for (int i = 0; i < inString.Length; i++)
+    // {
+    //     if (i == inString.Length - 1) // если строка закончилась - обработаем вручную
+    //     {
+    //         if (Char.IsNumber(inString[i]))  // если последний элемент число -
+    //         {
+    //             if (maybeInt != null)  /// если до этого не было ничего похожего на число или -/+
+    //             {
+    //                 maybeInt += inString[i];
+    //                 System.Console.WriteLine(maybeInt);
+    //             }
+    //             else                    // если что-то было - то добавляем наш последний символ
+    //             {
+    //                 maybeInt += inString[i];
+    //                 System.Console.WriteLine(maybeInt);
+    //                 maybeInt = null;
+
+    //             }
+    //         }
+    //         else
+    //         {
+    //             maybeInt += inString[i];
+    //             System.Console.WriteLine(maybeInt);
+    //             maybeInt = null;
+
+    //         }
+    //     }
+    //     else if (Char.IsNumber(inString[i]))
+    //     {
+    //         maybeInt += inString[i];
+    //     }
+    //     else if (inString[i] == '-')     // если встречаем минус -  
+    //     {
+    //         if (maybeInt != null) System.Console.WriteLine(maybeInt);    // проверяем было ли число до этого - если да - то выводим его 
+    //         {
+    //             if (Char.IsNumber(inString[i + 1])) maybeInt += inString[i]; //то проверяем если ли после него цифра - ели да
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (maybeInt != null)
+    //         {
+    //             System.Console.WriteLine(maybeInt);
+    //             maybeInt = null;
+    //         }
+    //     }
+    // }
 
     return countPlusNumber;
 
