@@ -27,7 +27,6 @@ void main()
         double[] crossPoint = SearchCrossPoint(k1, b1, k2, b2);
         System.Console.WriteLine($"Точка пересечения X = {crossPoint[0]}, Y = {crossPoint[1]}");
     }
-
 }
 
 double[] SearchCrossPoint(double K1, double B1, double K2, double B2)

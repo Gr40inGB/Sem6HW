@@ -2,26 +2,36 @@
 // // Посчитайте, сколько чисел больше 0 ввёл пользователь.
 // // 0, 7, 8, -2, -2 -> 2
 // // 1, -7, 567, 89, 223-> 3
+using System.Text;
 
 void Root()
 {
-    //Console.Clear();
+    Console.Clear();
     System.Console.Write("Программа подсчитает количество всех положительных введенных в строке чисел.\nВведите строку: ");
-    string inputString = Console.ReadLine();
-    // string[] StringNumberArray = GetArrayFirst8Number(inputString);
-    // PrintArray(StringNumberArray);
-    CountNumbersInStr(inputString);
-    // }
+    string inputString = Console.ReadLine()!;
+    string simpleString = ReturnSimpleString(inputString!);
+    System.Console.WriteLine($"В Вашей строке обнаружены следующие числа: {simpleString}");
+    System.Console.WriteLine($"Положительных чисел в ней: {SearchUpperZero(simpleString)} шт");
+}
+
+int SearchUpperZero(string stringForSearch)
+{
+    int countNatural = 0;
+    string[] numbers = stringForSearch.Split(",");
+    for (int i = 0; i < numbers.Length; i++)
+    {
+        if (Convert.ToInt32(numbers[i]) > 0)
+            countNatural++;
+    }
+    return countNatural;
 }
 
 
 
-int CountNumbersInStr(string inString)
+string ReturnSimpleString(string inString)
 {
-    int countPlusNumber = 0; // будет считать положительные числа
-    int countAllNumber = 0;  // будет считать все числа
+    StringBuilder snake = new StringBuilder(32);
     string maybeInt = null;  // строка в которой мы будем накапливать последовательные цифры  или + - перед числом
-    bool itsNumber = false;  //  тут будем выяснять находимся ли мы еще внутри числа в строке. Возмжно не пригодится
 
     for (int i = 0; i < inString.Length; i++)
     {
@@ -29,77 +39,33 @@ int CountNumbersInStr(string inString)
         {
             if (maybeInt != null && maybeInt != "-")       // если до этого maybeInt что-то содержало - то там явно было число и его можно выводить
             {
-                System.Console.WriteLine(maybeInt);
+                snake.Append(maybeInt + ", ");
                 maybeInt = "-";        // зануляем для поиска дальше
             }
             else maybeInt = "-";                 // если в maybeInt не было ничего добавляем минус
-
         }
-        else if (int.TryParse(maybeInt + inString[i], out int outNumber))
+        else if (Char.IsNumber(inString[i]))
         {
             maybeInt += inString[i];
+            if ((i == inString.Length - 1))
+            {
+                snake.Append(maybeInt);
+            }
         }
         else
         {
-            if (maybeInt != null || maybeInt != "-")       // если до этого maybeInt что-то содержало - то там явно было число и его можно выводить
+            if (maybeInt != null && maybeInt != "-")       // если до этого maybeInt что-то содержало - то там явно было число и его можно выводить
             {
-                System.Console.WriteLine(maybeInt);
+                snake.Append(maybeInt + ", ");
                 maybeInt = null;        // зануляем для поиска дальше
+            }
+            else if (maybeInt != null)                      // если до этого был минус - зануляем строку
+            {
+                maybeInt = null; // зануляем для поиска дальше
             }
         }
     }
-
-
-    // for (int i = 0; i < inString.Length; i++)
-    // {
-    //     if (i == inString.Length - 1) // если строка закончилась - обработаем вручную
-    //     {
-    //         if (Char.IsNumber(inString[i]))  // если последний элемент число -
-    //         {
-    //             if (maybeInt != null)  /// если до этого не было ничего похожего на число или -/+
-    //             {
-    //                 maybeInt += inString[i];
-    //                 System.Console.WriteLine(maybeInt);
-    //             }
-    //             else                    // если что-то было - то добавляем наш последний символ
-    //             {
-    //                 maybeInt += inString[i];
-    //                 System.Console.WriteLine(maybeInt);
-    //                 maybeInt = null;
-
-    //             }
-    //         }
-    //         else
-    //         {
-    //             maybeInt += inString[i];
-    //             System.Console.WriteLine(maybeInt);
-    //             maybeInt = null;
-
-    //         }
-    //     }
-    //     else if (Char.IsNumber(inString[i]))
-    //     {
-    //         maybeInt += inString[i];
-    //     }
-    //     else if (inString[i] == '-')     // если встречаем минус -  
-    //     {
-    //         if (maybeInt != null) System.Console.WriteLine(maybeInt);    // проверяем было ли число до этого - если да - то выводим его 
-    //         {
-    //             if (Char.IsNumber(inString[i + 1])) maybeInt += inString[i]; //то проверяем если ли после него цифра - ели да
-    //         }
-    //     }
-    //     else
-    //     {
-    //         if (maybeInt != null)
-    //         {
-    //             System.Console.WriteLine(maybeInt);
-    //             maybeInt = null;
-    //         }
-    //     }
-    // }
-
-    return countPlusNumber;
-
+    return snake.ToString();
 }
 
 Root();

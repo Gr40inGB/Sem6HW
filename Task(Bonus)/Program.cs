@@ -38,7 +38,7 @@ int[,] cutLine(int[,] arrayToCutLine)
     return tempArray;
 }
 
-int[,] Spiral(int[,] ArrayForSpiral)
+int[,] SnakeEat(int[,] ArrayForSpiral)   // проходим по нижней строке слева направо - записываем все значения
 {
     int hight = ArrayForSpiral.GetLength(0);
     int Width = ArrayForSpiral.GetLength(1);
@@ -67,11 +67,11 @@ void main()
 
     System.Console.WriteLine();
 
-    while (OurArray.Length > 0)
+    while (OurArray.Length > 0) /// повторяем пока не получим нулевой массив
     {
-        OurArray = Spiral(OurArray);
-        OurArray = cutLine(OurArray);
-        OurArray = TurnArray(OurArray);
+        OurArray = SnakeEat(OurArray); // проходим по нижней строке слева направо 
+        OurArray = cutLine(OurArray);  // отрезаем пройденную линию 
+        OurArray = TurnArray(OurArray); // переворачиваем массив по часовой стрелке
     }
 }
 
